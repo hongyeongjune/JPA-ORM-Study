@@ -21,6 +21,7 @@
         <hibernate.version>4.3.10.Final</hibernate.version>
         <!-- 데이터베이스 버전 -->
         <h2db.version>1.4.187</h2db.version>
+        <mysqldb.version>8.0.25</mysqldb.version>
     </properties>
 
     <dependencies>
@@ -43,6 +44,13 @@
             <artifactId>h2</artifactId>
             <version>${h2db.version}</version>
         </dependency>
+        <!-- mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysqldb.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -1,9 +1,6 @@
 package jpabook.start;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.List;
 
 public class JpaMain {
@@ -23,7 +20,11 @@ public class JpaMain {
             // 트랜잭션 - 시작
             entityTransaction.begin();
             // 비즈니스 로직 - 실행
-            logic(entityManager);
+//            logic(entityManager);
+            save(entityManager);
+
+            //여기까지 insert SQL 을 데이터베이스에 보내지 않는다.
+
             // 트랜잭션 - 커밋
             entityTransaction.commit();
         } catch (Exception e) {
@@ -41,13 +42,18 @@ public class JpaMain {
     private static void logic(EntityManager entityManager) {
 
         String id = "identity";
-        Member member = new Member(id, "영준", 26);
+        Member member = Member.builder()
+                .id(id)
+                .username("영준")
+                .age(26)
+                .build();
 
         entityManager.persist(member);
 
         member.update(27);
 
         Member savedMember = entityManager.find(Member.class, id);
+
         System.out.println("savedMember : " + savedMember.getUsername() + ", age : " + savedMember.getAge());
 
         List<Member> memberList = entityManager.createQuery("select m from Member m", Member.class).getResultList();
@@ -55,5 +61,24 @@ public class JpaMain {
         System.out.println("Member.size : " + memberList.size());
 
         entityManager.remove(member);
+    }
+
+    private static void save(EntityManager entityManager) {
+
+        Member A = Member.builder()
+                .id("testA")
+                .username("A")
+                .age(27)
+                .build();
+
+        Member B = Member.builder()
+                .id("testB")
+                .username("B")
+                .age(27)
+                .build();
+
+        entityManager.persist(A);
+        entityManager.persist(B);
+
     }
 }
